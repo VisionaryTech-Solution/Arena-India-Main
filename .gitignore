@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+# Local environment files (VITE_EVENTS_API_URL goes in .env.local). Keep the example file.
+.env
+.env.*
+*.local
+!.env.example

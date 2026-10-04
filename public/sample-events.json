@@ -1,0 +1,36 @@
+[
+  {
+    "Event ID": "sample-001",
+    "Event Name": "Sample Sheet Row: Ranchi Open",
+    "Sport": "Badminton",
+    "Event Category": "Tournament",
+    "Start Date": "14/02/2027",
+    "End Date": "16/02/2027",
+    "City": "Ranchi",
+    "State": "Jharkhand",
+    "Venue": "Sample Indoor Hall",
+    "Organiser": "Sample Association",
+    "Official URL": "",
+    "Ticket / Registration URL": "https://example.com/register",
+    "Event Status": "registration open",
+    "Verification Status": "verified",
+    "Last Updated": "2026-10-01T09:30:00Z"
+  },
+  {
+    "Event ID": "",
+    "Event Name": "Sample Sheet Row: Pune Run",
+    "Sport": "Running",
+    "Event Category": "Marathon",
+    "Start Date": "2027-03-07",
+    "End Date": "",
+    "City": "Pune",
+    "State": "Maharashtra",
+    "Venue": "",
+    "Organiser": "Sample Runners",
+    "Official URL": "example.com",
+    "Ticket / Registration URL": "N/A",
+    "Event Status": "Upcoming",
+    "Verification Status": "",
+    "Last Updated": ""
+  }
+]

@@ -1,0 +1,157 @@
+{
+  "name": "Arena India - Events API (read-only)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Arena India - Events API (read-only)\nPublic GET endpoint that returns the Events sheet as a JSON array for the website.\n\n**Before activating:**\n1. Google Sheets node: pick your credential, your spreadsheet and the Events tab\n2. Code node: put your real website address in ALLOWED_ORIGINS\n3. Webhook node > Options > Allowed Origins (CORS): same addresses, comma separated\n4. Toggle the workflow to Active (top right)\n\nProduction URL = Webhook node > Production URL",
+        "height": 330,
+        "width": 420
+      },
+      "id": "a0a0a0a0-0000-4000-8000-000000000005",
+      "name": "Setup notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "arena-events",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://YOUR-SITE.example,http://localhost:5173"
+        }
+      },
+      "id": "a0a0a0a0-0000-4000-8000-000000000001",
+      "name": "Events Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        400,
+        120
+      ],
+      "webhookId": "7d6f5a52-3b1e-4c53-9a35-5f0d3c9e1a11"
+    },
+    {
+      "parameters": {
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "id": "a0a0a0a0-0000-4000-8000-000000000002",
+      "name": "Read Events Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        640,
+        120
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// Arena India - \"Shape Events\" Code node (mode: Run Once for All Items)\n// Keeps ONLY the 15 columns the website uses, in a fixed order, as plain text.\n// Anything else in the sheet (internal notes, source text, row_number, etc.) is dropped and never leaves n8n.\nconst COLUMNS = [\n  'Event ID', 'Event Name', 'Sport', 'Event Category', 'Start Date', 'End Date',\n  'City', 'State', 'Venue', 'Organiser', 'Official URL', 'Ticket / Registration URL',\n  'Event Status', 'Verification Status', 'Last Updated',\n];\n// Websites allowed to read this API from a browser (CORS). Put your real site(s) here. No trailing slash.\n// Use ['*'] to allow every site (fine for public read-only data, but exact origins are tidier).\nconst ALLOWED_ORIGINS = ['https://YOUR-SITE.example', 'http://localhost:5173'];\n\nconst DATE_COLUMNS = ['Start Date', 'End Date', 'Last Updated'];\n\n// Header matching ignores case, spaces and punctuation, so \"start date\" or \"Ticket/Registration URL\" still match.\nconst norm = (s) => String(s == null ? '' : s).toLowerCase().replace(/[^a-z0-9]/g, '');\nconst byHeader = Object.fromEntries(COLUMNS.map((c) => [norm(c), c]));\n\n// A date that Google stored as a number (serial) becomes yyyy-mm-dd. Everything else is passed through as text.\nfunction toText(value, column) {\n  if (value == null) return '';\n  if (typeof value === 'number' && DATE_COLUMNS.includes(column) && value > 20000 && value < 80000) {\n    return new Date(Date.UTC(1899, 11, 30) + Math.round(value) * 864e5).toISOString().slice(0, 10);\n  }\n  return String(value).trim();\n}\n\nconst events = [];\nfor (const item of $input.all()) {\n  const row = Object.fromEntries(COLUMNS.map((c) => [c, '']));\n  for (const [header, value] of Object.entries(item.json || {})) {\n    const column = byHeader[norm(header)];\n    if (column && row[column] === '') row[column] = toText(value, column);\n  }\n  if (row['Event Name'] !== '') events.push(row); // skip blank / spacer rows\n}\n\n// Pick the CORS value for this request. NOTE: this reads the trigger node by name (\"Events Webhook\"); don't rename it.\nconst requestOrigin = (($('Events Webhook').first().json.headers || {}).origin) || '';\nconst corsOrigin = ALLOWED_ORIGINS.includes('*') ? '*'\n  : ALLOWED_ORIGINS.includes(requestOrigin) ? requestOrigin : ALLOWED_ORIGINS[0];\n\n// ONE item: `events` is sent as the JSON array, `corsOrigin` goes into the response header.\nreturn [{ json: { events, corsOrigin } }];\n"
+      },
+      "id": "a0a0a0a0-0000-4000-8000-000000000003",
+      "name": "Shape Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.events }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "={{ $json.corsOrigin }}"
+              },
+              {
+                "name": "Vary",
+                "value": "Origin"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "public, max-age=60"
+              }
+            ]
+          }
+        }
+      },
+      "id": "a0a0a0a0-0000-4000-8000-000000000004",
+      "name": "Respond With Events",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        120
+      ]
+    }
+  ],
+  "connections": {
+    "Events Webhook": {
+      "main": [
+        [
+          {
+            "node": "Read Events Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Events Sheet": {
+      "main": [
+        [
+          {
+            "node": "Shape Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shape Events": {
+      "main": [
+        [
+          {
+            "node": "Respond With Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

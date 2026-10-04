@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-navy-950 font-sans text-slate-300 antialiased;
+    background-image: radial-gradient(60rem 28rem at 85% -10%, rgba(255, 122, 26, 0.10), transparent 60%),
+      radial-gradient(50rem 30rem at -10% 0%, rgba(42, 56, 104, 0.45), transparent 60%);
+    background-repeat: no-repeat;
+  }
+  h1, h2, h3 { @apply font-display tracking-tight text-white; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-accent; outline-style: solid; }
+  ::selection { @apply bg-accent text-navy-950; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+}
+
+@layer components {
+  .container-page { @apply mx-auto w-full max-w-page px-5 sm:px-8; }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-navy-950 transition hover:bg-accent-soft;
+  }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
+.sheet { animation: sheet-up 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
