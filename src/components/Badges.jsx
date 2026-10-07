@@ -1,20 +1,20 @@
 const STATUS = {
-  Upcoming: 'bg-sky-400/15 text-sky-300',
-  'Registration Open': 'bg-emerald-400/15 text-emerald-300',
-  Live: 'bg-red-500/20 text-red-300',
-  Completed: 'bg-slate-500/20 text-slate-400',
+  Upcoming: 'bg-sky-100 text-sky-700',
+  'Registration Open': 'bg-emerald-100 text-emerald-700',
+  Live: 'bg-red-100 text-red-700',
+  Completed: 'bg-gray-100 text-gray-500',
 }
 const VERIFY = {
-  Verified: 'bg-emerald-400/15 text-emerald-300',
-  Pending: 'bg-amber-400/15 text-amber-300',
-  Unverified: 'bg-slate-500/20 text-slate-400',
+  Verified: 'bg-emerald-100 text-emerald-700',
+  Pending: 'bg-amber-100 text-amber-700',
+  Unverified: 'bg-gray-100 text-gray-500',
 }
 
 export const StatusBadge = ({ status }) => (
-  <span className={`rounded-full px-3 py-1 text-xs font-bold ${STATUS[status] || STATUS.Upcoming}`}>{status}</span>
+  <span className={`px-3 py-1 text-xs font-bold ${STATUS[status] || STATUS.Upcoming}`}>{status}</span>
 )
 export const VerificationBadge = ({ status }) => (
-  <span className={`rounded-full px-3 py-1 text-xs font-bold ${VERIFY[status] || VERIFY.Unverified}`}>
+  <span className={`px-3 py-1 text-xs font-bold ${VERIFY[status] || VERIFY.Unverified}`}>
     {status === 'Verified' ? 'Verified' : `Verification ${status.toLowerCase()}`}
   </span>
 )

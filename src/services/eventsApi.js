@@ -103,6 +103,31 @@ export async function getUpcomingEvents({ limit, force } = {}) {
   return limit ? upcoming.slice(0, limit) : upcoming
 }
 
+// Latest 15 upcoming events — newest uploaded first.
+// Google Sheets appends new rows at the bottom, so reversing the API array order
+// gives newest-first. Falls back gracefully if last_updated is present.
+export async function getLatestUpcomingEvents({ limit = 15, force } = {}) {
+  const today = todayISO()
+  const all = await getEvents({ force })
+  const upcoming = all.filter((e) => e.event_status !== 'Completed' && e.end_date >= today)
+
+  // If last_updated is available on any event, sort by it descending.
+  // Otherwise fall back to reversing the sheet order (last row = newest upload).
+  const hasTimestamp = upcoming.some((e) => e.last_updated)
+  if (hasTimestamp) {
+    upcoming.sort((a, b) => {
+      const ta = a.last_updated || ''
+      const tb = b.last_updated || ''
+      return tb.localeCompare(ta)
+    })
+  } else {
+    // Reverse sheet order: last row in the API response was added most recently.
+    upcoming.reverse()
+  }
+
+  return upcoming.slice(0, limit)
+}
+
 // Same sport AND city ranks first, then same sport, then same city. Active events beat completed ones.
 export async function getRelatedEvents(event, { limit = 3, force } = {}) {
   const score = (e) => (e.sport === event.sport ? 2 : 0) + (e.city === event.city ? 1 : 0) + (e.event_status !== 'Completed' ? 0.5 : 0)

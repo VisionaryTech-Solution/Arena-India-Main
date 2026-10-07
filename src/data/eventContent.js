@@ -8,7 +8,7 @@ export function getEventContent(e) {
   return [
     {
       title: 'About the event',
-      body: `${e.event_name} is a ${e.event_category.toLowerCase()} for ${e.sport.toLowerCase()}, organised by ${e.organiser}. It takes place at ${e.venue} in ${e.city}, ${e.state}, on ${dates}.`,
+      body: `${e.event_name} is a ${e.event_category.toLowerCase()} for ${e.sport.toLowerCase()}${e.organiser && e.organiser !== 'Organiser not listed' ? `, organised by ${e.organiser}` : ''}. It takes place at ${e.venue} in ${e.city}, ${e.state}, on ${dates}.`,
     },
     {
       title: 'Registration information',

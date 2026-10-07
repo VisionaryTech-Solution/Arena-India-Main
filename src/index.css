@@ -5,32 +5,71 @@
 @layer base {
   html { scroll-behavior: smooth; }
   body {
-    @apply bg-navy-950 font-sans text-slate-300 antialiased;
-    background-image: radial-gradient(60rem 28rem at 85% -10%, rgba(255, 122, 26, 0.10), transparent 60%),
-      radial-gradient(50rem 30rem at -10% 0%, rgba(42, 56, 104, 0.45), transparent 60%);
-    background-repeat: no-repeat;
+    @apply bg-white font-sans antialiased;
+    color: #1A1A1A;
   }
-  h1, h2, h3 { @apply font-display tracking-tight text-white; }
-  :focus-visible { @apply outline-2 outline-offset-2 outline-accent; outline-style: solid; }
-  ::selection { @apply bg-accent text-navy-950; }
+  h1, h2, h3 { @apply font-display tracking-tight; color: #1A1A1A; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-red-600; outline-style: solid; }
+  ::selection { @apply bg-red-600 text-white; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   }
 }
 
 @layer components {
   .container-page { @apply mx-auto w-full max-w-page px-5 sm:px-8; }
+
+  /* Primary red rectangular button */
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-navy-950 transition hover:bg-accent-soft;
+    @apply inline-flex items-center justify-center bg-red-600 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-red-700;
+  }
+
+  /* Secondary outlined button */
+  .btn-outline {
+    @apply inline-flex items-center justify-center border-2 border-charcoal px-5 py-2.5 text-sm font-bold text-charcoal transition hover:bg-charcoal hover:text-white;
+  }
+
+  /* White outlined button (for dark backgrounds) */
+  .btn-outline-white {
+    @apply inline-flex items-center justify-center border-2 border-white px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white hover:text-charcoal;
+  }
+
+  /* Section label — small red uppercase tag */
+  .section-label {
+    @apply inline-block text-xs font-bold uppercase tracking-widest text-red-600;
   }
 }
 
+/* Entrance animations */
 @keyframes rise {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: none; }
 }
 .rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in { animation: fade-in 0.6s ease both; }
+
 @keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
 .sheet { animation: sheet-up 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* Hero parallax hint */
+.hero-img {
+  transition: transform 8s ease-out;
+}
+
+/* Card image zoom on hover */
+.card-img-wrap {
+  overflow: hidden;
+}
+.card-img-wrap img,
+.card-img-wrap .card-img-bg {
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.group:hover .card-img-wrap img,
+.group:hover .card-img-wrap .card-img-bg {
+  transform: scale(1.06);
+}

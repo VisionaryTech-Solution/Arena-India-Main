@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import { DATE_PRESETS } from '../utils/filters.js'
 
-const field = 'w-full rounded-xl border bg-navy-800 px-3 text-white transition focus:border-accent focus:outline-none [color-scheme:dark]'
+const field = 'w-full border bg-white px-3 text-charcoal transition focus:border-red-600 focus:outline-none'
 
 function Select({ label, value, onChange, options, anyLabel, big }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-medium text-slate-400">{label}</span>
+      <span className="mb-1.5 block text-xs font-medium text-gray-500">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`${field} ${big ? 'py-3 text-base' : 'py-2.5 text-sm'} ${value ? 'border-accent/60' : 'border-white/10 text-slate-300'}`}
+        className={`${field} ${big ? 'py-3 text-base' : 'py-2.5 text-sm'} ${value ? 'border-red-500' : 'border-gray-200 text-gray-600'}`}
       >
         <option value="">{anyLabel}</option>
         {options.map((o) => (
@@ -57,7 +57,7 @@ export default function FilterBar({ filters, options, onChange, onClear, activeC
     }
   }, [open])
 
-  const clearBtn = 'rounded-xl border border-white/15 px-4 py-2.5 text-sm font-bold text-white transition hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/15 disabled:hover:text-white'
+  const clearBtn = 'border border-gray-200 px-4 py-2.5 text-sm font-bold text-charcoal transition hover:border-red-600 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40'
 
   return (
     <div>
@@ -67,16 +67,16 @@ export default function FilterBar({ filters, options, onChange, onClear, activeC
           type="button"
           onClick={() => setOpen(true)}
           aria-haspopup="dialog"
-          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/15 px-5 text-sm font-bold text-white"
+          className="inline-flex min-h-11 items-center gap-2 border border-gray-200 bg-white px-5 text-sm font-bold text-charcoal"
         >
           Filters
-          {activeCount > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-xs text-navy-950">{activeCount}</span>}
+          {activeCount > 0 && <span className="grid h-5 min-w-5 place-items-center bg-red-600 px-1 text-xs text-white">{activeCount}</span>}
         </button>
-        {activeCount > 0 && <button type="button" onClick={onClear} className="min-h-11 px-2 text-sm font-bold text-accent">Clear Filters</button>}
+        {activeCount > 0 && <button type="button" onClick={onClear} className="min-h-11 px-2 text-sm font-bold text-red-600">Clear Filters</button>}
       </div>
 
       {/* Desktop panel */}
-      <div className="hidden grid-cols-4 items-end gap-3 rounded-2xl border border-white/10 bg-navy-900 p-5 lg:grid">
+      <div className="hidden grid-cols-4 items-end gap-3 border border-gray-200 bg-white p-5 lg:grid">
         <Fields filters={filters} options={options} onChange={onChange} />
         <button type="button" onClick={onClear} disabled={activeCount === 0} className={clearBtn}>Clear Filters</button>
       </div>
@@ -85,10 +85,10 @@ export default function FilterBar({ filters, options, onChange, onClear, activeC
       {open && (
         <div className="fixed inset-0 z-[60] lg:hidden" role="dialog" aria-modal="true" aria-label="Filters">
           <button type="button" aria-label="Close filters" className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
-          <div className="sheet absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-3xl border-t border-white/10 bg-navy-900">
+          <div className="sheet absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col border-t border-gray-200 bg-white">
             <div className="flex items-center justify-between px-5 pb-2 pt-5">
-              <h2 className="text-xl font-bold">Filters</h2>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close filters" className="grid h-11 w-11 place-items-center rounded-full text-slate-300 hover:bg-white/10">
+              <h2 className="font-display text-xl font-bold uppercase text-charcoal">Filters</h2>
+              <button type="button" onClick={() => setOpen(false)} aria-label="Close filters" className="grid h-11 w-11 place-items-center text-gray-400 hover:text-charcoal">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4l12 12M16 4 4 16" /></svg>
               </button>
             </div>
@@ -97,7 +97,7 @@ export default function FilterBar({ filters, options, onChange, onClear, activeC
             </div>
             <div className="flex gap-3 border-t border-white/10 p-4">
               <button type="button" onClick={onClear} disabled={activeCount === 0} className={`${clearBtn} min-h-12`}>Clear Filters</button>
-              <button type="button" onClick={() => setOpen(false)} className="btn-primary min-h-12 flex-1 text-base">
+              <button type="button" onClick={() => setOpen(false)} className="min-h-12 flex-1 bg-red-600 text-base font-bold text-white transition hover:bg-red-700">
                 {resultCount === 0 ? 'No events found' : `Show ${resultCount} ${resultCount === 1 ? 'event' : 'events'}`}
               </button>
             </div>
