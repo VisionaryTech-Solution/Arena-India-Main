@@ -96,10 +96,16 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Link
-            to="/events"
+            to="/sponsor"
             className="bg-red-600 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-red-700"
           >
             Become a Sponsor
+          </Link>
+          <Link
+            to="/vendor-categories"
+            className="border-2 border-charcoal px-5 py-2.5 text-sm font-bold text-charcoal transition hover:bg-charcoal hover:text-white"
+          >
+            Become a Vendor
           </Link>
         </div>
 
@@ -134,8 +140,11 @@ export default function Navbar() {
                 {l.label}
               </NavLink>
             ))}
-            <Link to="/events" className="mt-3 bg-red-600 px-5 py-3 text-center text-base font-bold text-white">
+            <Link to="/sponsor" className="mt-3 bg-red-600 px-5 py-3 text-center text-base font-bold text-white">
               Become a Sponsor
+            </Link>
+            <Link to="/vendor-categories" className="mt-2 border-2 border-charcoal px-5 py-3 text-center text-base font-bold text-charcoal transition hover:bg-charcoal hover:text-white">
+              Become a Vendor
             </Link>
           </div>
         </nav>

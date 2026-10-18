@@ -5,6 +5,8 @@ import Events from './pages/Events.jsx'
 import EventDetails from './pages/EventDetails.jsx'
 import Sports from './pages/Sports.jsx'
 import Cities from './pages/Cities.jsx'
+import Sponsor from './pages/Sponsor.jsx'
+import VendorCategories from './pages/VendorCategories.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 export default function App() {
@@ -16,6 +18,8 @@ export default function App() {
         <Route path="events/:id" element={<EventDetails />} />
         <Route path="sports" element={<Sports />} />
         <Route path="cities" element={<Cities />} />
+        <Route path="sponsor" element={<Sponsor />} />
+        <Route path="vendor-categories" element={<VendorCategories />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

@@ -187,16 +187,16 @@ export default function Home() {
           </div>
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <Link
-              to="/events"
+              to="/sponsor"
               className="border-2 border-white px-8 py-4 text-base font-bold uppercase tracking-wide text-white transition hover:bg-white hover:text-red-600"
             >
               Become a Sponsor
             </Link>
             <Link
-              to="/events"
+              to="/vendor-categories"
               className="bg-white px-8 py-4 text-base font-bold uppercase tracking-wide text-red-600 transition hover:bg-red-700 hover:text-white"
             >
-              Explore Events
+              Become a Vendor
             </Link>
           </div>
         </div>

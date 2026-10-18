@@ -10,7 +10,7 @@ const FOOTER_LINKS = {
   ],
   Company: [
     { label: 'About Arena India', to: '/' },
-    { label: 'Become a Sponsor', to: '/events' },
+    { label: 'Become a Sponsor', to: '/sponsor' },
     { label: 'Contact Us', to: '/' },
   ],
 }
@@ -26,7 +26,7 @@ export default function Footer() {
             <p className="text-sm text-white/80">Connect your brand with India's growing sports ecosystem.</p>
           </div>
           <Link
-            to="/events"
+            to="/sponsor"
             className="shrink-0 border-2 border-white px-7 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-white hover:text-red-600"
           >
             Become a Sponsor
